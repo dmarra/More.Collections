@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DropoutStackTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CircularQueueTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\More.Collections\More.Collections.csproj">
