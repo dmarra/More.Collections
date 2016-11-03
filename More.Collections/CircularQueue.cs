@@ -20,6 +20,7 @@ namespace More.Collections {
     public class CircularQueue<T> : IEnumerable<T>, ICollection, IEnumerable  {       
         private CircularQueueNode<T> currentNode;
         private CircularQueueNode<T> previousNode;
+        private CircularQueueNode<T> beginningNode;
         
         private object syncRoot;
 
@@ -140,6 +141,15 @@ namespace More.Collections {
                 return currentNode.Item;
             }
         }
+
+        public bool IsBeginning {
+            get {
+                if (beginningNode == null) {
+                    throw new InvalidOperationException("Must set a beginning before you may check for it");
+                }
+                return currentNode == beginningNode;
+            }
+        }
         #endregion
 
         #region CONSTRUCTORS
@@ -190,18 +200,29 @@ namespace More.Collections {
         }
 
         public T Dequeue() {
-            if (Count > 0) {
+            if (Count == 1) {
                 T retVal = currentNode.Item;
-                CircularQueueNode<T> buffer = currentNode;
-                currentNode = buffer.Next;
-                buffer = null;
-
-                if (previousNode != null) {
-                    previousNode.Next = currentNode;
-                }
+                currentNode = null;
+                previousNode = null;
+                ClearBeginning();
 
                 Count--;
                 return retVal;
+
+            } else if(Count > 1) {   
+                T retVal = currentNode.Item;
+                CircularQueueNode<T> buffer = currentNode;
+                currentNode = buffer.Next;                                        
+                previousNode.Next = currentNode;
+                
+                if (beginningNode != null) {
+                    MarkBeginning();
+                }
+
+                buffer = null;
+                Count--;
+                return retVal;
+
             } else {
                 throw new System.InvalidOperationException("The current CircularQueue is empty.");
             }
@@ -218,6 +239,29 @@ namespace More.Collections {
             return currentNode.Next.Item;
         }
 
+
+        /// <summary>
+        /// Marks the current node as the beginning. 
+        /// 
+        /// Even though circular queues have no true beginning, sometimes
+        /// it is conveinent to mark an arbitrary position as the
+        /// beginning to keep track of revolutions around the queue.
+        /// 
+        /// In the event that a node marked as the beginning node is Dequeue()'s
+        /// (which effectivly removes it entirely), the beginning node
+        /// will become the one directly before it
+        /// </summary>
+        public void MarkBeginning() {
+            beginningNode = currentNode;
+        }
+
+        /// <summary>
+        /// Clears the beginning node, making the queue again
+        /// have no defined beginning or end
+        /// </summary>
+        public void ClearBeginning() {
+            beginningNode = null;
+        }
        
 
         public void CopyTo(T[] array, int index) {

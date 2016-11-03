@@ -93,6 +93,35 @@ namespace UnitTests {
 
 
         [TestMethod]
+        public void TestBeginnning() {
+            int[] testList = new int[] {1,2,3,4,5};
+            CircularQueue<int> cq = new CircularQueue<int>(testList);
+
+            cq.Next();
+            cq.Next();
+            Assert.IsTrue(cq.Current == 3, "Unexpected current value; value is " + cq.Current);
+
+            cq.MarkBeginning();
+            Assert.IsTrue(cq.IsBeginning, "Beginning not marked correctly");
+
+            int i = 0;
+            do {
+                cq.Next();
+                i++;
+            } while (!cq.IsBeginning && i < 6);
+
+            Assert.IsTrue(i < 6, "IsBeginning detection failed; would have looped forever");
+            Assert.IsTrue(cq.Current == 3, "Unexpected beginning");
+
+            // test the shifting of the beginning due to a dequeue
+            cq.Dequeue();
+            Assert.IsTrue(cq.Current == 4, "Unexpected current value; value is " + cq.Current);
+            Assert.IsTrue(cq.IsBeginning, "Did not reposition to new beginning");
+
+        }
+
+
+        [TestMethod]
         public void TestGC() {
             CircularQueue<int> cq = new CircularQueue<int>();
 
