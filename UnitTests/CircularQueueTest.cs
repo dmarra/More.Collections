@@ -64,6 +64,23 @@ namespace UnitTests {
 
 
         [TestMethod]
+        public void TestNext() {
+            int[] testList = new int[] {1,2,3,4,5};
+            CircularQueue<int> cq = new CircularQueue<int>(testList);
+
+            cq.Next();
+            Assert.IsTrue(cq.Peek() == 2, "Unexpected current value");
+
+            cq.Enqueue(6);
+            do {
+                cq.Next();
+            } while (cq.Peek() != 1);
+            cq.Next();
+            Assert.IsTrue(cq.Peek() == 6, "Value was not enqueued int he proper position after a Next() operation.");
+        }
+
+
+        [TestMethod]
         public void TestEnqueueDequeue() {
             CircularQueue<int> cq = new CircularQueue<int>();
 
