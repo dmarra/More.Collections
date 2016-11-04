@@ -57,9 +57,9 @@ namespace UnitTests {
             int[] testList = new int[] {1,2,3,4,5};
             CircularQueue<int> cq = new CircularQueue<int>(testList);
 
-            Assert.IsTrue(cq.Peek() == 2, "Unexpected Peek value; expected 2");
+            Assert.IsTrue(cq.Peek() == 1, "Unexpected Peek value; expected 1");
             cq.Next();
-            Assert.IsTrue(cq.Peek() == 3, "Unexpected Peek value; expected 3, but value was " + cq.Peek());
+            Assert.IsTrue(cq.Peek() == 2, "Unexpected Peek value; expected 2, but value was " + cq.Peek());
         }
 
 
