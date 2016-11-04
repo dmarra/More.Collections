@@ -234,7 +234,7 @@ namespace More.Collections {
         }
 
         public T Peek() {
-            return currentNode.Next.Item;
+            return Current;
         }
 
 
