@@ -228,7 +228,8 @@ namespace More.Collections {
             }
         }
 
-        public T Next() {            
+        public T Next() {
+            previousNode = currentNode;
             currentNode = currentNode.Next;
             return currentNode.Item;
         }
