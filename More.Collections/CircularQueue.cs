@@ -228,11 +228,9 @@ namespace More.Collections {
             }
         }
 
-        public T Next() {
-            T retVal = currentNode.Item;
+        public T Next() {            
             currentNode = currentNode.Next;
-
-            return retVal;
+            return currentNode.Item;
         }
 
         public T Peek() {
