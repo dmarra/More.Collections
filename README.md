@@ -24,7 +24,7 @@ This:
         DropoutStack<int> myStack = new DropoutStack<int>(5);
     
         Console.Write("Pushing onto stack:\n");
-        for(int i = 1; i &lt;= 10; i++) {
+        for(int i = 1; i <= 10; i++) {
             myStack.Push(i);
             Console.WriteLine("Pushed " + i);
         }
@@ -32,7 +32,7 @@ This:
         Console.Write("\nPopping off stack:\n");
         do {
             Console.WriteLine("Popped: " + myStack.Pop());
-        } while(myStack.Count $gt; 0);
+        } while(myStack.Count > 0);
 ```
 Produces the following output:
 ```        
