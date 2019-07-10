@@ -78,7 +78,7 @@ namespace More.Collections {
                     complete = cNode.Next == sNode;
 
                 } else {
-                    cNode = cNode.Next;
+                    cNode    = cNode.Next;
                     complete = cNode == sNode;
                 }
                 return !complete;
@@ -184,27 +184,27 @@ namespace More.Collections {
 
         public void Enqueue(T item) {
             if (Count == 0) {
-                currentNode = new CircularQueueNode<T>(item);
+                currentNode      = new CircularQueueNode<T>(item);
                 currentNode.Next = currentNode;
 
             } else if (Count == 1) {
-                previousNode = new CircularQueueNode<T>(item);
+                previousNode      = new CircularQueueNode<T>(item);
                 previousNode.Next = currentNode;
-                currentNode.Next = previousNode;
+                currentNode.Next  = previousNode;
 
             } else {
                 CircularQueueNode<T> qn = new CircularQueueNode<T>(item);
-                qn.Next = currentNode;
-                previousNode.Next = qn;
-                previousNode = qn;
+                qn.Next                 = currentNode;
+                previousNode.Next       = qn;
+                previousNode            = qn;
             }
             Count++;
         }
 
         public T Dequeue() {
             if (Count == 1) {
-                T retVal = currentNode.Item;
-                currentNode = null;
+                T retVal     = currentNode.Item;
+                currentNode  = null;
                 previousNode = null;
                 ClearBeginning();
 
@@ -212,10 +212,10 @@ namespace More.Collections {
                 return retVal;
 
             } else if(Count > 1) {   
-                T retVal = currentNode.Item;
+                T retVal                    = currentNode.Item;
                 CircularQueueNode<T> buffer = currentNode;
-                currentNode = buffer.Next;                                        
-                previousNode.Next = currentNode;
+                currentNode                 = buffer.Next;                                        
+                previousNode.Next           = currentNode;
                 
                 if (beginningNode != null) {
                     MarkBeginning();
@@ -232,7 +232,7 @@ namespace More.Collections {
 
         public T Next() {
             previousNode = currentNode;
-            currentNode = currentNode.Next;
+            currentNode  = currentNode.Next;
             return currentNode.Item;
         }
 

@@ -72,7 +72,7 @@ namespace More.Collections {
 
             internal Enumerator(DropoutStack<T> stack) {
                 this.stack = stack;
-                position = -1;
+                position   = -1;
             }
 
             public T Current {
