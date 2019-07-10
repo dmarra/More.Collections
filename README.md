@@ -18,8 +18,10 @@ A classic use case for such a container is to store undo history in an applicati
 The standard Stack would grow out of control, but a DropoutStack allows for
 intelligent storage of user events without it growing out of control.   
 
+This:
+
 ```
-        DropoutStack&lt;int&gt; myStack = new DropoutStack&lt;int&gt;(5);
+        DropoutStack<int> myStack = new DropoutStack<int>(5);
     
         Console.Write("Pushing onto stack:\n");
         for(int i = 1; i &lt;= 10; i++) {
@@ -31,8 +33,9 @@ intelligent storage of user events without it growing out of control.
         do {
             Console.WriteLine("Popped: " + myStack.Pop());
         } while(myStack.Count $gt; 0);
-    
-        // Output:
+```
+Produces the following output:
+```        
         Pushing onto stack:
         Pushed 1
         Pushed 2
@@ -52,6 +55,7 @@ intelligent storage of user events without it growing out of control.
         Popped: 7
         Popped: 6
 ```
+
 
 ## CircularQueue
 
