@@ -32,7 +32,8 @@ namespace UnitTests {
                     "Unexpected value encountered during foreach; start at natural beginning. \n" +
                     "local current: " + current + "\n" +
                     "foreach item: " + item + "\n" +
-                    "iteration count: " + iterationCount);
+                    "iteration count: " + iterationCount
+                );
                 current++;
                 iterationCount++;
             }
@@ -148,11 +149,12 @@ namespace UnitTests {
 
 
             WeakReference reference = null;
-            new Action(() => 
-            {
-                int item = cq.Dequeue();  
-                reference = new WeakReference(item, true);
-            })();
+            new Action(
+                () => {
+                    int item = cq.Dequeue();  
+                    reference = new WeakReference(item, true);
+                }
+            )();
 
             // Item should have gone out of scope about now, 
             // so the garbage collector can clean it up
