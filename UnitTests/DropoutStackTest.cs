@@ -20,7 +20,7 @@ namespace UnitTests {
 
             // size constructor
             DropoutStack<int> stackB = new DropoutStack<int>(10);
-            Assert.IsTrue(stackB.Capacity == 10, "Did not initialize with desrired capactiy");
+            Assert.IsTrue(stackB.Capacity == 10, "Did not initialize with desired capacity");
 
             // copy constructor
             List<int> intList = new List<int>();
