@@ -220,8 +220,7 @@ namespace More.Collections {
                 if (beginningNode != null) {
                     MarkBeginning();
                 }
-
-                buffer = null;
+                                
                 Count--;
                 return retVal;
 
