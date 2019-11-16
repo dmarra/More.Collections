@@ -272,7 +272,7 @@ namespace More.Collections {
             } else if (Count > array.Length - index) {
                 throw new ArgumentException("Array index would overflow");
             }
-
+            
             int i = 0;
             foreach (T item in this) {
                 array[i] = item;
@@ -280,8 +280,13 @@ namespace More.Collections {
             }            
         }
 
+        /// <summary>
+        /// Alias for CopyTo(T[])
+        /// </summary>
+        /// <param name="array">Array to copy items to</param>
+        /// <param name="index">Unused</param>
         public void CopyTo(Array array, int index) {
-            CopyTo(array, index);
+            CopyTo((T[])array, index);
         } 
     }
 }
