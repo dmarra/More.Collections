@@ -262,9 +262,14 @@ namespace More.Collections {
         public void ClearBeginning() {
             beginningNode = null;
         }
-       
 
-        public void CopyTo(T[] array, int index) {
+
+        /// <summary>
+        /// Copies elements from this collection to the chosen array
+        /// </summary>
+        /// <param name="array">Array to copy items to</param>
+        /// <param name="index">Index to start copying to in array</param>
+        public void CopyTo(T[] array, int index = 0) {
             if (array == null) {
                 throw new ArgumentNullException("Array is null");
             } else if(index < 0 || index > array.Length) {
@@ -275,7 +280,7 @@ namespace More.Collections {
             
             int i = 0;
             foreach (T item in this) {
-                array[i] = item;
+                array[index + i] = item;
                 i++;
             }            
         }
@@ -284,7 +289,7 @@ namespace More.Collections {
         /// Alias for CopyTo(T[])
         /// </summary>
         /// <param name="array">Array to copy items to</param>
-        /// <param name="index">Unused</param>
+        /// <param name="index">Index to start copying to in array</param>
         public void CopyTo(Array array, int index) {
             CopyTo((T[])array, index);
         } 

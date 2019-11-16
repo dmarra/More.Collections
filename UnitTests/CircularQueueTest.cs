@@ -140,6 +140,27 @@ namespace UnitTests {
 
 
         [TestMethod]
+        public void TestCopyTo() {
+            int[] testList = new int[] { -6, -7, -8, -9, -10 };
+
+            CircularQueue<int> cq = new CircularQueue<int>(testList);
+            Array arr = testList;
+
+            int[] testCopyA = new int[] { -1, -2, -3, -4, -5, 6, 7, 8, 9, 10 };
+            int[] testCopyB = new int[] { -1, -2, -3, -4, -5, 6, 7, 8, 9, 10 };
+
+            // ensure this method behaves like Array's version; respecting index
+            cq.CopyTo(testCopyA, 5);
+            arr.CopyTo(testCopyB, 5);
+
+            for(int i = 5; i < 10; i++) {
+                Assert.AreEqual(testCopyA[i], testCopyB[i], "CopyTo did not match Array.CopyTo output");
+                Assert.AreEqual(testCopyA[i], testList[i - 5], "Expected element did not change");
+            }
+        }
+
+
+        [TestMethod]
         public void TestGC() {
             CircularQueue<int> cq = new CircularQueue<int>();
 
