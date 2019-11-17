@@ -167,10 +167,8 @@ namespace More.Collections {
             int size = 0;
             if (source.GetType().IsArray) {
                 size = ((T[])source).Length;
-            } else if (source is ICollection) {
-                size = ((ICollection)source).Count;
-            } else if (source is ICollection<T>) {
-                size = ((ICollection<T>)source).Count;
+            } else {
+                size = source.Count();               
             }
 
             if (size <= 0) {
