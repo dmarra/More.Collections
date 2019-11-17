@@ -315,7 +315,7 @@ namespace More.Collections {
         }
 
         public void CopyTo(T[] array) {
-            CopyTo((T[])array, 0);           
+            CopyTo(array, 0);           
         }
         
         public void CopyTo(Array array, int index) {
