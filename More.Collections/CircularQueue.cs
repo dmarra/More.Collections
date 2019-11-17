@@ -39,9 +39,9 @@ namespace More.Collections {
         ///Enumerates the elements of a CircularQueue
         ///</summary>            
         public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator, IEquatable<Enumerator> {            
-            CircularQueueNode<T> sNode;
-            CircularQueueNode<T> cNode;
-            CircularQueue<T>     queue;
+            CircularQueueNode<T>      sNode;
+            CircularQueueNode<T>      cNode;
+            readonly CircularQueue<T> queue;
 
             internal Enumerator(CircularQueue<T> queue) {
                 this.queue = queue;
