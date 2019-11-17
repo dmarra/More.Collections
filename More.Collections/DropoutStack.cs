@@ -364,13 +364,13 @@ namespace More.Collections {
         /// </summary>
         /// <returns>Copy of stack in array format</returns>
         public T[] ToArray() {
-            T[] items = new T[Count];
-            CopyTo(items, 0);
-            return items;
+            T[] copy = new T[Count];
+            CopyTo(copy, 0);
+            return copy;
         }
             
         public override string ToString() {
-            return "DropoutStack<" + typeof(T).ToString() + "> {Count: " + Count + ", Capacity: " + Capacity + "}";
+            return "DropoutStack<" + typeof(T) + "> {Count: " + Count + ", Capacity: " + Capacity + "}";
         }
 
 
