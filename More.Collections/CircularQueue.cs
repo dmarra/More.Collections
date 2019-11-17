@@ -26,7 +26,7 @@ namespace More.Collections {
 
         public class CircularQueueNode<T>{
             public T Item { get; set; }
-            public CircularQueueNode<T> Next { get; set; }
+            public CircularQueueNode<T> Next { get; set; }            
 
             public CircularQueueNode(T item) {                
                 this.Item = item;
@@ -40,9 +40,9 @@ namespace More.Collections {
         ///</summary>            
         public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator {            
             CircularQueueNode<T> sNode;
-            CircularQueueNode<T> cNode;
+            CircularQueueNode<T> cNode;            
 
-            internal Enumerator(CircularQueue<T> queue) {                            
+            internal Enumerator(CircularQueue<T> queue) {                
                 sNode = queue.currentNode;
                 cNode = null;
             }
@@ -84,7 +84,12 @@ namespace More.Collections {
                 return !complete;
             }
 
-            public void Reset() {                
+            public void Reset() {
+                // Circular queues don't have a real beginning or end.
+                // While it is true that we allow one to _flag_ a beginning
+                // node, we don't have any functional use for it within
+                // the collection itself. 
+                sNode = cNode;
             }
 
             void IDisposable.Dispose() {
@@ -144,7 +149,7 @@ namespace More.Collections {
 
         public bool IsBeginning {
             get {
-                if (beginningNode == null) {
+                if (!hasBeginning()) {
                     throw new InvalidOperationException("Must set a beginning before you may check for it");
                 }
                 return currentNode == beginningNode;
@@ -252,15 +257,27 @@ namespace More.Collections {
         /// will become the one directly before it
         /// </summary>
         public void MarkBeginning() {
-            beginningNode = currentNode;
+            if(hasBeginning()) {
+                ClearBeginning();                
+            }
+            beginningNode = currentNode;           
         }
 
         /// <summary>
         /// Clears the beginning node, making the queue again
         /// have no defined beginning or end
         /// </summary>
-        public void ClearBeginning() {
+        public void ClearBeginning() {           
             beginningNode = null;
+        }
+
+
+        /// <summary>
+        /// Determines if  a beginning has been marked for this queue
+        /// </summary>
+        /// <returns>True if beginning was marked, false otherwise</returns>
+        public bool hasBeginning() {
+            return beginningNode != null;
         }
 
 
