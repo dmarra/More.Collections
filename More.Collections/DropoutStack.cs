@@ -66,7 +66,7 @@ namespace More.Collections {
         ///<summary>
         ///Enumerates the elements of a DropoutStack
         ///</summary>            
-        public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator {
+        public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator, IEquatable<T> {
             DropoutStack<T> stack;
             int position;
 
@@ -91,6 +91,26 @@ namespace More.Collections {
                     return (object)Current;                    
                 }
             }
+
+
+            public bool Equals(T other) {
+                return Current.Equals(other);
+            }
+
+            public bool Equals(Enumerator other) {
+                return stack.Equals(other.stack) && position == other.position;
+            }
+
+            public static bool operator ==(DropoutStack<T>.Enumerator e1,
+                                           DropoutStack<T>.Enumerator e2 ) {
+                return e1.Equals(e2);
+            }
+
+            public static bool operator !=(DropoutStack<T>.Enumerator e1,
+                                           DropoutStack<T>.Enumerator e2 ) {
+                return !e1.Equals(e2);
+            }
+
 
             public bool MoveNext() {
                 position++;
@@ -205,6 +225,7 @@ namespace More.Collections {
             int i = 0;
             foreach (T item in source) {
                 items[i] = item;
+                i++;
             }
             Count = size;
         }

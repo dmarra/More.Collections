@@ -31,6 +31,15 @@ namespace UnitTests {
             Assert.IsTrue(stackC.Capacity == 10, "Did not initialize with capacity equaling count of passed enumeration");
             Assert.IsTrue(stackC.Count == 10, "Did not initialize with elements of passed enumeration");
 
+            DropoutStack<int>.Enumerator en = stackC.GetEnumerator();
+            foreach(var value in intList) {
+                en.MoveNext();
+                Assert.IsTrue(
+                    en.Equals(value), 
+                    "Elements do not equal values of original list. " + en.Current + " != " + value
+                );
+            }
+
             // exception test
             bool caught = false;
             try {
@@ -183,6 +192,39 @@ namespace UnitTests {
             DropoutStack<int> dropStack = new DropoutStack<int>(1);
             dropStack.Pop();
         }
-       
+
+
+        [TestMethod]
+        public void TestEnumerationEquals() {
+            // test enumerator's Equals() implimentation, along with override
+            int[] testList = new int[] { 1, 2, 3, 4 };
+            DropoutStack<int> cq1 = new DropoutStack<int>(testList);
+            DropoutStack<int> cq2 = new DropoutStack<int>(testList);
+            DropoutStack<int>.Enumerator en1 = cq1.GetEnumerator();
+            DropoutStack<int>.Enumerator en2 = cq2.GetEnumerator();
+            DropoutStack<int>.Enumerator en3;
+
+            en1.MoveNext();
+            en2.MoveNext();
+            en3 = en1;
+
+            Assert.IsTrue(en1.Equals(en2.Current), "Enumerators are not equal; value comparison");
+            Assert.IsTrue(en1.Equals(en3),         "Enumerators are not equal; Enumerator comparison");
+            Assert.IsTrue(en1 == en3,              "Enumerators are not equal; == Overload comparison");
+
+            en2.MoveNext();
+
+            Assert.IsFalse(en1.Equals(en2.Current), "Enumerators are equal; value comparison");
+            Assert.IsFalse(en1.Equals(en2),         "Enumerators are equal; Enumerator comparison");
+            Assert.IsTrue(en1 != en2,               "Enumerators are equal; != Overload comparison");
+
+            DropoutStack<int> cq3 = new DropoutStack<int>(cq1);
+            en3 = cq3.GetEnumerator();
+            en3.MoveNext();
+            Assert.IsTrue(en1.Equals(en3.Current), "Enumerators are not equal; value comparison, different stacks");
+            Assert.IsFalse(en1.Equals(en3),        "Enumerators are equal; Enumerator comparison with new identical generation");
+        }
+
+
     }
 }
