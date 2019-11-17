@@ -287,34 +287,6 @@ namespace More.Collections {
             return false;
         }
 
-        /// <summary>
-        /// Copies the elements of this stack to the specified array, starting
-        /// at the passed array index. 
-        /// </summary>
-        /// <exception cref="T:System.ArgumentNullException">
-        ///     <paramref name="array"/> is null
-        /// </exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">
-        ///     <paramref name="arrayIndex"/> index is out of range
-        /// </exception>
-        /// <exception cref="T:System.ArgumentException">
-        ///     <paramref name="arrayIndex"/> is set to a value that would cause an overflow of <paramref name="array"/>
-        /// </exception>
-        /// <param name="array">array to copy to</param>
-        /// <param name="arrayIndex">The index in the array to start the copying on</param>
-        public void CopyTo(T[] array, int arrayIndex) {
-            if (array == null) {
-                throw new ArgumentNullException("Array is null");
-            } else if(arrayIndex < 0 || arrayIndex > array.Length) {
-                throw new ArgumentOutOfRangeException("Start array index is out of range");
-            } else if (Count > array.Length - arrayIndex) {
-                throw new ArgumentException("Array index would overflow");
-            }
-
-            for (int i = 0; i < Count; i++) {
-                array[arrayIndex + i] = items[i];
-            }
-        }
 
         /// <summary>
         /// Returns the next element without removing it from the stack.
@@ -365,7 +337,7 @@ namespace More.Collections {
         /// <returns>Copy of stack in array format</returns>
         public T[] ToArray() {
             T[] copy = new T[Count];
-            CopyTo(copy, 0);
+            CopyTo(copy);
             return copy;
         }
             
@@ -374,8 +346,45 @@ namespace More.Collections {
         }
 
 
+        /// <summary>
+        /// Copies the elements of this stack to the specified array, starting
+        /// at the passed array index. 
+        /// </summary>
+        /// <exception cref="T:System.ArgumentNullException">
+        ///     <paramref name="array"/> is null
+        /// </exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">
+        ///     <paramref name="arrayIndex"/> index is out of range
+        /// </exception>
+        /// <exception cref="T:System.ArgumentException">
+        ///     <paramref name="arrayIndex"/> is set to a value that would cause an overflow of <paramref name="array"/>
+        /// </exception>
+        /// <param name="array">array to copy to</param>
+        /// <param name="arrayIndex">The index in the array to start the copying on</param>
+        public void CopyTo(T[] array, int arrayIndex) {
+            if (array == null) {
+                throw new ArgumentNullException("Array is null");
+            } else if(arrayIndex < 0 || arrayIndex > array.Length) {
+                throw new ArgumentOutOfRangeException("Start array index is out of range");
+            } else if (Count > array.Length - arrayIndex) {
+                throw new ArgumentException("Array index would overflow");
+            }
+
+            for (int i = 0; i < Count; i++) {
+                array[arrayIndex + i] = items[i];
+            }
+        }
+
+        public void CopyTo(T[] array) {
+            CopyTo(array, 0);
+        }
+
         public void CopyTo(Array array, int index) {
-            CopyTo(array, index);
-        }        
+            CopyTo((T[])array, index);
+        }   
+        
+        public void CopyTo(Array array) {
+            CopyTo((T[])array, 0);
+        }  
     }
 }
