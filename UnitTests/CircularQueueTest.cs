@@ -50,7 +50,32 @@ namespace UnitTests {
                 }
                 current = item;
             }           
-            Assert.IsTrue(current == 1, "Unexpected current value after foreach iteration. current: " + current);
+            Assert.IsTrue(current == 1, "Unexpected current value after foreach iteration. current: " + current);            
+        }
+
+        [TestMethod]
+        public void TestEnumerationEquals() {
+            // test enumerator's Equals() implimentation, along with override
+            int[] testList = new int[] { 1, 2, 3, 4, 5 };
+            CircularQueue<int> cq1 = new CircularQueue<int>(testList);
+            CircularQueue<int> cq2 = new CircularQueue<int>(testList);
+            CircularQueue<int>.Enumerator en1 = cq1.GetEnumerator();
+            CircularQueue<int>.Enumerator en2 = cq2.GetEnumerator();
+            CircularQueue<int>.Enumerator en3;
+
+            en1.MoveNext();
+            en2.MoveNext();
+            en3 = en1;
+
+            Assert.IsTrue(en1.Equals(en2.Current), "Enumerators are not equal; value comparison");
+            Assert.IsTrue(en1.Equals(en3),         "Enumerators are not equal; Enumerator comparison");
+            Assert.IsTrue(en1 == en3,              "Enumerators are not equal; == Overload comparison");
+
+            en2.MoveNext();
+            
+            Assert.IsFalse(en1.Equals(en2.Current), "Enumerators are equal; value comparison");
+            Assert.IsFalse(en1.Equals(en2),         "Enumerators are equal; Enumerator comparison");
+            Assert.IsTrue(en1 != en2,               "Enumerators are equal; != Overload comparison");
         }
 
         [TestMethod]

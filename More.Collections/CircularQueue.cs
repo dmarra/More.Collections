@@ -38,7 +38,7 @@ namespace More.Collections {
         ///<summary>
         ///Enumerates the elements of a CircularQueue
         ///</summary>            
-        public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator {            
+        public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator, IEquatable<Enumerator> {            
             CircularQueueNode<T> sNode;
             CircularQueueNode<T> cNode;            
 
@@ -64,6 +64,24 @@ namespace More.Collections {
                 get {
                     return (object)Current;                    
                 }
+            }
+
+            public bool Equals(T other) {
+                return cNode.Item.Equals(other);
+            }
+
+            public bool Equals(Enumerator other) {
+                return cNode.Equals(other.cNode);
+            }
+
+            public static bool operator ==(CircularQueue<T>.Enumerator e1,
+                                           CircularQueue<T>.Enumerator e2) {
+                return e1.Equals(e2);
+            }
+
+            public static bool operator !=(CircularQueue<T>.Enumerator e1,
+                                           CircularQueue<T>.Enumerator e2) {
+                return !e1.Equals(e2);
             }
 
             public bool MoveNext() {
@@ -93,7 +111,7 @@ namespace More.Collections {
             }
         }
 
-        public IEnumerator<T> GetEnumerator() {
+        public CircularQueue<T>.Enumerator GetEnumerator() {
             return new CircularQueue<T>.Enumerator(this);
         }
 
