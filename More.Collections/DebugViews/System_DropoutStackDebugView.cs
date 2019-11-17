@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace More.Collections {
     internal sealed class System_DropoutStackDebugView<T> {
-        private DropoutStack<T> stack;
+        private readonly DropoutStack<T> stack;
 		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
 		public T[] Items {
 			get {
