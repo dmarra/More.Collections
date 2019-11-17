@@ -76,6 +76,12 @@ namespace UnitTests {
             Assert.IsFalse(en1.Equals(en2.Current), "Enumerators are equal; value comparison");
             Assert.IsFalse(en1.Equals(en2),         "Enumerators are equal; Enumerator comparison");
             Assert.IsTrue(en1 != en2,               "Enumerators are equal; != Overload comparison");
+
+            CircularQueue<int> cq3 = new CircularQueue<int>(cq1);
+            en3 = cq3.GetEnumerator();
+            en3.MoveNext();
+            Assert.IsTrue(en1.Equals(en3.Current), "Enumerators are not equal; value comparison, different queues");
+            Assert.IsFalse(en1.Equals(en3),        "Enumerators are equal; Enumerator comparison with new identical generation");
         }
 
         [TestMethod]

@@ -40,11 +40,13 @@ namespace More.Collections {
         ///</summary>            
         public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator, IEquatable<Enumerator> {            
             CircularQueueNode<T> sNode;
-            CircularQueueNode<T> cNode;            
+            CircularQueueNode<T> cNode;
+            CircularQueue<T>     queue;
 
-            internal Enumerator(CircularQueue<T> queue) {                
+            internal Enumerator(CircularQueue<T> queue) {
+                this.queue = queue;
                 sNode = queue.currentNode;
-                cNode = null;
+                cNode = null;                
             }
 
             public T Current {
@@ -70,8 +72,8 @@ namespace More.Collections {
                 return cNode.Item.Equals(other);
             }
 
-            public bool Equals(Enumerator other) {
-                return cNode.Equals(other.cNode);
+            public bool Equals(Enumerator other) {               
+                return cNode.Equals(other.cNode) && queue.Equals(other.queue);
             }
 
             public static bool operator ==(CircularQueue<T>.Enumerator e1,
