@@ -88,11 +88,7 @@ namespace More.Collections {
 
             object IEnumerator.Current {
                 get {
-                    try {
-                        return (object)Current;
-                    } catch {
-                        throw;
-                    }
+                    return (object)Current;                    
                 }
             }
 
@@ -176,12 +172,8 @@ namespace More.Collections {
         /// Constructor whch allows setting of capacity
         /// </summary>
         /// <param name="size">Desired capacity of the stack</param>
-        public DropoutStack(int size) {      
-            try {
-                Init(size);
-            } catch {
-                throw;
-            }                     
+        public DropoutStack(int size) {    
+            Init(size);                                
         }
 
         /// <summary>

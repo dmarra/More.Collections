@@ -62,11 +62,7 @@ namespace More.Collections {
 
             object IEnumerator.Current {
                 get {
-                    try {
-                        return (object)Current;
-                    } catch {
-                        throw;
-                    }
+                    return (object)Current;                    
                 }
             }
 
