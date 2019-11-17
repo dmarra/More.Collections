@@ -282,7 +282,7 @@ namespace More.Collections {
         /// </summary>
         /// <param name="array">Array to copy items to</param>
         /// <param name="index">Index to start copying to in array</param>
-        public void CopyTo(T[] array, int index = 0) {
+        public void CopyTo(T[] array, int index) {
             if (array == null) {
                 throw new ArgumentNullException("Array is null");
             } else if(index < 0 || index > array.Length) {
@@ -298,13 +298,16 @@ namespace More.Collections {
             }            
         }
 
-        /// <summary>
-        /// Alias for CopyTo(T[])
-        /// </summary>
-        /// <param name="array">Array to copy items to</param>
-        /// <param name="index">Index to start copying to in array</param>
+        public void CopyTo(T[] array) {
+            CopyTo((T[])array, 0);           
+        }
+        
         public void CopyTo(Array array, int index) {
             CopyTo((T[])array, index);
-        } 
+        }
+
+        public void CopyTo(Array array) {
+            CopyTo((T[])array, 0);
+        }
     }
 }
