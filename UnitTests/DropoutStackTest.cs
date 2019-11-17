@@ -183,6 +183,17 @@ namespace UnitTests {
                 caught = true;
             }
             Assert.IsTrue(caught, "CopyTo() allowed a copy to an array with an insufficient capacity");
+
+            dropStack = new DropoutStack<int>(intArray);
+            Array arr = Array.CreateInstance(typeof(int), 10);
+            dropStack.CopyTo(arr);
+
+            var en = arr.GetEnumerator();
+            foreach(var value in dropStack) {
+                en.MoveNext();
+                Assert.AreEqual(value, en.Current, "CopyTo(Array) did not properly copy from Array object");
+            }
+
         }
 
 
