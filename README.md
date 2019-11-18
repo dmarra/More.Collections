@@ -20,7 +20,7 @@ intelligent storage of user events without it growing out of control.
 
 This:
 
-```
+```csharp
         DropoutStack<int> myStack = new DropoutStack<int>(5);
     
         Console.Write("Pushing onto stack:\n");
@@ -55,7 +55,6 @@ Produces the following output:
         Popped: 7
         Popped: 6
 ```
-
 
 ## CircularQueue
 
