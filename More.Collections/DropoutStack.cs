@@ -362,7 +362,7 @@ namespace More.Collections {
 
 
         public void CopyTo(Array array, int index) {
-            CopyTo(array, index);
+            CopyTo((T[])array, index);
         }        
     }
 }

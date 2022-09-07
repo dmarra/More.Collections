@@ -161,6 +161,90 @@ namespace UnitTests {
             GC.WaitForPendingFinalizers();
 
             Assert.Null(reference.Target);
-        }
+        }	
+		
+		[Fact]
+		public void TestCopyToCopiesToCorrectIndex() {
+			CircularQueue<int> cq = new CircularQueue<int>();
+
+			for (int i = 1; i <= 5; i++) {
+                cq.Enqueue(i);
+            }
+
+			int[] actual = new int[6] {-1, -1, -1, -1, -1, -1};
+			cq.CopyTo(actual, 1);
+
+			int[] expected = new int[6] {-1, 1, 2, 3, 4, 5};
+			Assert.Equal(expected, actual);
+		}
+
+		[Fact]
+		public void TestCopyToDetectsNullArray() {
+			CircularQueue<int> cq = new CircularQueue<int>();
+
+			for (int i = 1; i <= 5; i++) {
+                cq.Enqueue(i);
+            }
+
+			int[] actual = null;
+			Assert.Throws<ArgumentNullException>(() =>cq.CopyTo(actual, 0));
+		}
+
+		[Fact]
+		public void TestCopyToDetectsIndexOutOfBounds() {
+			CircularQueue<int> cq = new CircularQueue<int>();
+
+			for (int i = 1; i <= 5; i++) {
+                cq.Enqueue(i);
+            }
+
+			int[] actual = new int[5];
+			Assert.Throws<ArgumentOutOfRangeException>(() =>cq.CopyTo(actual, 6));
+		}
+		
+		[Fact]
+		public void TestCopyToDetectsArrayOverflowWhenArrayIsNotLargeEnough() {
+			CircularQueue<int> cq = new CircularQueue<int>();
+
+			for (int i = 1; i <= 5; i++) {
+                cq.Enqueue(i);
+            }
+
+			int[] actual = new int[4];
+			Assert.Throws<ArgumentException>(() =>cq.CopyTo(actual, 0));
+		}	
+		
+		[Fact]
+		public void TestCopyToDetectsArrayOverflowWhenIndexTooHigh() {
+			CircularQueue<int> cq = new CircularQueue<int>();
+
+			for (int i = 1; i <= 5; i++) {
+                cq.Enqueue(i);
+            }
+
+			int[] actual = new int[10];
+			Assert.Throws<ArgumentException>(() =>cq.CopyTo(actual, 7));
+		}
+		
+		[Fact]
+		/// <summary>
+		/// This tests a special case where the CopyTo(Array, int index) form
+		/// is called. It ensures we pass it along to the correct overload, and
+		/// not itself (something that was detected in static analysis)
+		/// </summary>
+		public void TestCopyToArrayTypeDoesNotRecurseInfinitely() {
+			CircularQueue<int> cq = new CircularQueue<int>();
+
+            for (int i = 1; i <= 5; i++) {
+                cq.Enqueue(i);
+            }
+
+
+			Array subject = Array.CreateInstance(typeof(int), 5);
+			cq.CopyTo(subject, 0);
+			// NOTE: there is no real assertion here because if this fails, its pretty
+			//       catastrophic
+			Assert.True(true);
+		}
     }
 }

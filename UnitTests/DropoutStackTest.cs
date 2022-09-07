@@ -114,73 +114,104 @@ namespace UnitTests {
             Assert.True(dropStack.Count == 1, "DropoutStack Peek() removed element instead of just returning it");
             dropStack.Pop();
         }
-
-
-        [Fact]        
-        public void TestCopy() {
-            DropoutStack<int> dropStack = new DropoutStack<int>(10);     
-
-            // test copy
-            for (int i = 0; i < 10; i++) {
-                dropStack.Push(i);
-            }
-            int[] intArray = new int[10];            
-            dropStack.CopyTo(intArray, 0);
-
-            Assert.True(intArray.Length == 10, "DropoutStack CopyTo() failed");
-
-            int lastVal = int.MaxValue;
-            for (int i = intArray.Length - 1; i >= 0; i--) {               
-                Assert.True(intArray[i] < lastVal, "DropoutStack had an incorrect order of items in array copy");
-                lastVal = intArray[i];
-            }        
-   
-            // text exceptions
-            bool caught = false;
-            try {
-                int[] nullArray = null;
-                dropStack.CopyTo(nullArray, 0);
-            } catch (ArgumentNullException ex) {
-                caught = true;
-            }
-            Assert.True(caught, "CopyTo() allowed a null array");
-
-            caught = false;
-            try {                
-                dropStack.CopyTo(intArray, -1);
-            } catch (ArgumentOutOfRangeException ex) {
-                caught = true;
-            }
-            Assert.True(caught, "CopyTo() allowed a negative index");
-
-            caught = false;
-            try {                
-                dropStack.CopyTo(intArray, 11);
-            } catch (ArgumentOutOfRangeException ex) {
-                caught = true;
-            }
-            Assert.True(caught, "CopyTo() allowed an out of range index");
-            
-            caught = false;
-            dropStack.Resize(20);
-            for (int i = 0; i < 10; i++) {
-                dropStack.Push(i);
-            }
-            Assert.True(dropStack.Count == 20, "DropoutStack did not have expected number of elements. " + dropStack.ToString());
-            try {
-                dropStack.CopyTo(intArray, 0);
-            } catch (ArgumentException ex) {
-                caught = true;
-            }
-            Assert.True(caught, "CopyTo() allowed a copy to an array with an insufficient capacity");
-        }
-
+			   
 
         [Fact]
         public void TestPopException() {
             DropoutStack<int> dropStack = new DropoutStack<int>(1);            
             Assert.Throws<InvalidOperationException>(() => dropStack.Pop());
         }
+
+
+		[Fact]
+		public void TestCopyToCopiesToCorrectIndex() {
+			DropoutStack<int> dropStack = new DropoutStack<int>(5);     
+
+            // test copy
+            for (int i = 1; i <= 5; i++) {
+                dropStack.Push(i);
+            }
+
+			int[] actual = new int[6] {-1, -1, -1, -1, -1, -1};
+			dropStack.CopyTo(actual, 1);
+
+			int[] expected = new int[6] {-1, 1, 2, 3, 4, 5};
+			Assert.Equal(expected, actual);
+		}
+
+		[Fact]
+		public void TestCopyToDetectsNullArray() {
+			DropoutStack<int> dropStack = new DropoutStack<int>(5);     
+
+            // test copy
+            for (int i = 1; i <= 5; i++) {
+                dropStack.Push(i);
+            }
+
+			int[] actual = null;
+			Assert.Throws<ArgumentNullException>(() => dropStack.CopyTo(actual, 0));
+		}
+
+		[Fact]
+		public void TestCopyToDetectsIndexOutOfBounds() {
+			DropoutStack<int> dropStack = new DropoutStack<int>(5);     
+
+            // test copy
+            for (int i = 1; i <= 5; i++) {
+                dropStack.Push(i);
+            }
+
+			int[] actual = new int[5];
+			Assert.Throws<ArgumentOutOfRangeException>(() => dropStack.CopyTo(actual, 6));
+		}
+		
+		[Fact]
+		public void TestCopyToDetectsArrayOverflowWhenArrayIsNotLargeEnough() {
+			DropoutStack<int> dropStack = new DropoutStack<int>(5);     
+
+            // test copy
+            for (int i = 1; i <= 5; i++) {
+                dropStack.Push(i);
+            }
+
+			int[] actual = new int[4];
+			Assert.Throws<ArgumentException>(() => dropStack.CopyTo(actual, 0));
+		}	
+		
+		[Fact]
+		public void TestCopyToDetectsArrayOverflowWhenIndexTooHigh() {
+			DropoutStack<int> dropStack = new DropoutStack<int>(5);     
+
+            // test copy
+            for (int i = 1; i <= 5; i++) {
+                dropStack.Push(i);
+            }
+
+			int[] actual = new int[10];
+			Assert.Throws<ArgumentException>(() => dropStack.CopyTo(actual, 7));
+		}
+		
+		[Fact]
+		/// <summary>
+		/// This tests a special case where the CopyTo(Array, int index) form
+		/// is called. It ensures we pass it along to the correct overload, and
+		/// not itself (something that was detected in static analysis)
+		/// </summary>
+		public void TestCopyToArrayTypeDoesNotRecurseInfinitely() {
+			DropoutStack<int> dropStack = new DropoutStack<int>(5);     
+
+            // test copy
+            for (int i = 1; i <= 5; i++) {
+                dropStack.Push(i);
+            }
+
+
+			Array subject = Array.CreateInstance(typeof(int), 5);
+			dropStack.CopyTo(subject, 0);
+			// NOTE: there is no real assertion here because if this fails, its pretty
+			//       catastrophic
+			Assert.True(true);
+		}
        
     }
 }

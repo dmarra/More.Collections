@@ -274,15 +274,15 @@ namespace More.Collections {
                 throw new ArgumentException("Array index would overflow");
             }
 
-            int i = 0;
+            int i = index;
             foreach (T item in this) {
                 array[i] = item;
                 i++;
             }            
         }
 
-        public void CopyTo(Array array, int index) {
-            CopyTo(array, index);
+        public void CopyTo(Array array, int index) {			
+            CopyTo((T[])array, index);
         } 
     }
 }
